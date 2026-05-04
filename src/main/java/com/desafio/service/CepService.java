@@ -17,18 +17,23 @@ public class CepService {
     }
 
     public CepResponse buscarCep(String cep) {
-
-        if (cep == null || cep.isBlank()) {
+        if (cep == null || cep.trim().isBlank()) {
             throw new IllegalArgumentException("CEP inválido");
         }
 
-        CepResponse response = viaCepClient.buscarCep(cep);
+        String cepSanitizado = cep.replaceAll("[^0-9]", "");
 
-        logService.salvar(cep, response);
+        if (cepSanitizado.length() != 8) {
+            throw new IllegalArgumentException("CEP deve conter 8 dígitos");
+        }
+
+        CepResponse response = viaCepClient.buscarCep(cepSanitizado);
 
         if (response.getCep() == null) {
             throw new CepNotFoundException("CEP não encontrado");
         }
+
+        logService.salvar(cep, response);
 
         return response;
     }

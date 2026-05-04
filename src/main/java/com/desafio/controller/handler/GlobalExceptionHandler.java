@@ -3,20 +3,32 @@ package com.desafio.controller.handler;
 import com.desafio.exception.CepNotFoundException;
 import com.desafio.exception.ErrorResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                "timestamp", LocalDateTime.now(),
+                "status", 400,
+                "error", "Bad Request",
+                "message", ex.getMessage()
+        ));
+    }
+
     @ExceptionHandler(CepNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleCepNotFound(CepNotFoundException ex) {
-        return new ErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                ex.getMessage(),
-                LocalDateTime.now()
-        );
+    public ResponseEntity<Map<String, Object>> handleCepNotFound(CepNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                "timestamp", LocalDateTime.now(),
+                "status", 404,
+                "error", "Not Found",
+                "message", ex.getMessage()
+        ));
     }
 }
