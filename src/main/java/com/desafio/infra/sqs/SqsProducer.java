@@ -17,7 +17,7 @@ public class SqsProducer {
         this.sqsClient = sqsClient;
     }
 
-    public void enviarMensagem(String mensagem) {
+    public void sendMessage(String mensagem) {
         SendMessageRequest request = SendMessageRequest.builder()
                 .queueUrl(queueUrl)
                 .messageBody(mensagem)

@@ -23,7 +23,7 @@ public class CepLogService {
         this.objectMapper = objectMapper;
     }
 
-    public void salvar(String cep, Object response) {
+    public void save(String cep, Object response) {
         try {
             String json = objectMapper.writeValueAsString(response);
 
@@ -34,7 +34,7 @@ public class CepLogService {
 
             repository.save(log);
 
-            sqsProducer.enviarMensagem(json);
+            sqsProducer.sendMessage(json);
 
         } catch (Exception e) {
             throw new RuntimeException("Erro ao processar log", e);

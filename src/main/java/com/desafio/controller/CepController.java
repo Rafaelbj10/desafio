@@ -16,6 +16,6 @@ public class CepController {
 
     @GetMapping("/{cep}")
     public CepResponse buscarCep(@PathVariable String cep) {
-        return cepService.buscarCep(cep);
+        return cepService.findCep(cep);
     }
 }

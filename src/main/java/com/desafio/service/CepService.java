@@ -16,12 +16,10 @@ public class CepService {
         this.logService = logService;
     }
 
-    public CepResponse buscarCep(String cep) {
-        if (cep == null || cep.trim().isBlank()) {
-            throw new IllegalArgumentException("CEP inválido");
-        }
+    public CepResponse findCep(String cep) {
+        validCep(cep);
 
-        String cepSanitizado = cep.replaceAll("[^0-9]", "");
+        String cepSanitizado = clearCep(cep);
 
         if (cepSanitizado.length() != 8) {
             throw new IllegalArgumentException("CEP deve conter 8 dígitos");
@@ -33,8 +31,22 @@ public class CepService {
             throw new CepNotFoundException("CEP não encontrado");
         }
 
-        logService.salvar(cep, response);
+        logService.save(cep, response);
 
         return response;
+    }
+
+    private void validCep(String cep) {
+        if (cep == null || cep.trim().isBlank()) {
+            throw new IllegalArgumentException("CEP inválido");
+        }
+
+        if (!cep.trim().matches("\\d{8}|\\d{5}-\\d{3}")) {
+            throw new IllegalArgumentException("Formato de CEP inválido. Use 00000000 ou 00000-000");
+        }
+    }
+
+    private String clearCep(String cep) {
+        return cep.replaceAll("[^0-9]", "");
     }
 }
