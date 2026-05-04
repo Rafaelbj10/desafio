@@ -1,0 +1,37 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: desafio-cep
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/desafio
+    username: root
+    password: root
+
+    jpa:
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+
+via-cep:
+  url: https://viacep.com.br/ws
+
+feign:
+  client:
+    config:
+      viaCepClient:
+        connectTimeout: 3000
+        readTimeout: 3000
+        loggerLevel: full
+
+logging:
+  level:
+    root: INFO
+    com.desafio: DEBUG
+    feign: DEBUG
+
+aws:
+  sqs:
+    queue-url: http://localhost:4566/000000000000/cep-queue

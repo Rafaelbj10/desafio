@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-desafio
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: desafio
+    ports:
+      - "3306:3306"
+
+  wiremock:
+    image: wiremock/wiremock:3.5.2
+    container_name: wiremock
+    ports:
+      - "8089:8080"
+    volumes:
+      - ./wiremock:/home/wiremock
+    command: [ "--root-dir", "/home/wiremock" ]
