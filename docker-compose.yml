@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   mysql:
     image: mysql:8.0
@@ -18,3 +17,16 @@ services:
     volumes:
       - ./wiremock:/home/wiremock
     command: [ "--root-dir", "/home/wiremock" ]
+
+  localstack:
+    image: localstack/localstack:3.4
+    container_name: localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sqs
+      - AWS_DEFAULT_REGION=us-east-1
+      - PERSISTENCE=1
+    volumes:
+      - ./localstack:/var/lib/localstack
+      - ./localstack/init:/etc/localstack/init/ready.d
