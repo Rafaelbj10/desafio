@@ -29,7 +29,7 @@ services:
       - PERSISTENCE=1
       - DEBUG=1
       - LS_LOG=trace
-      - LOCALSTACK_AUTH_TOKEN=ls-bIdICISo-4352-JUFU-QIrI-NAPIMArA299d
+      - LOCALSTACK_AUTH_TOKEN=
     volumes:
       - ./localstack:/var/lib/localstack
       - ./localstack/init:/etc/localstack/init/ready.d
