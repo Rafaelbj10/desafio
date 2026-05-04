@@ -72,9 +72,29 @@ docker-compose up -d
 | WireMock   | wiremock      | 8089  | Mock da API ViaCEP                   |
 | LocalStack | localstack    | 4566  | Emulador AWS com SQS para mensageria |
 
----
+## Cria a tabela no MySQL
+Crie a tabela `cep_log` em sua IDE de banco para armazenar os logs de consulta:
+````
+create table cep_log
+(
+id            bigint auto_increment
+primary key,
+cep           varchar(255) null,
+response      text         null,
+data_consulta datetime     null
+);
+````
 
-### 🔎 Verificar containers
+## 📬 Criar fila SQS (LocalStack)
+**No terminal do intellij ou outro terminal, execute:**
+aws --endpoint-url=http://localhost:4566 sqs create-queue --queue-name cep-queue
+
+## Consultar mensagens na fila SQS
+**No terminal do intellij ou outro terminal, execute:**
+aws --endpoint-url=http://localhost:4566 sqs receive-message \
+--queue-url http://localhost:4566/000000000000/cep-queue
+
+## 🔎 Verificar containers
 
 ```bash
 docker-compose ps

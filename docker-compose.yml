@@ -20,13 +20,16 @@ services:
 
   localstack:
     image: localstack/localstack:3.4
-    container_name: localstack
     ports:
       - "4566:4566"
+      - "4510-4559:4510-4559"
     environment:
-      - SERVICES=sqs
+      - SERVICES=sqs,s3,sns
       - AWS_DEFAULT_REGION=us-east-1
       - PERSISTENCE=1
+      - DEBUG=1
+      - LS_LOG=trace
+      - LOCALSTACK_AUTH_TOKEN=ls-bIdICISo-4352-JUFU-QIrI-NAPIMArA299d
     volumes:
       - ./localstack:/var/lib/localstack
       - ./localstack/init:/etc/localstack/init/ready.d
