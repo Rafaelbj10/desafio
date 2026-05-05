@@ -75,13 +75,15 @@ docker-compose up -d
 ## Cria a tabela no MySQL
 Crie a tabela `cep_log` em sua IDE de banco para armazenar os logs de consulta:
 ````
+create database desafio;
+
 create table cep_log
 (
-id            bigint auto_increment
-primary key,
-cep           varchar(255) null,
-response      text         null,
-data_consulta datetime     null
+    id            bigint auto_increment
+        primary key,
+    cep           varchar(255) null,
+    response      text         null,
+    data_consulta datetime     null
 );
 ````
 

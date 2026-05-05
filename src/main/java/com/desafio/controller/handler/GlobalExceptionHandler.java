@@ -2,6 +2,8 @@ package com.desafio.controller.handler;
 
 import com.desafio.exception.CepNotFoundException;
 import com.desafio.exception.ErrorResponse;
+import com.desafio.infra.client.FeignErrorDecoder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +32,10 @@ public class GlobalExceptionHandler {
                 "error", "Not Found",
                 "message", ex.getMessage()
         ));
+    }
+
+    @Bean
+    public FeignErrorDecoder feignErrorDecoder() {
+        return new FeignErrorDecoder();
     }
 }
