@@ -32,9 +32,8 @@ public class CepLogService {
             log.setResponse(json);
             log.setDataConsulta(LocalDateTime.now());
 
-            repository.save(log);
-
             sqsProducer.sendMessage(json);
+            repository.save(log);
 
         } catch (Exception e) {
             throw new RuntimeException("Erro ao processar log", e);
