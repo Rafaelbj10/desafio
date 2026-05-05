@@ -1,12 +1,12 @@
 package com.desafio.service;
 
+import com.desafio.exception.CepLogException;
 import com.desafio.infra.repository.CepLogRepository;
 import com.desafio.infra.sqs.SqsProducer;
 import com.desafio.model.CepLog;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 public class CepLogService {
@@ -24,19 +24,21 @@ public class CepLogService {
     }
 
     public void save(String cep, Object response) {
+        String json;
         try {
-            String json = objectMapper.writeValueAsString(response);
+            json = objectMapper.writeValueAsString(response);
+        } catch (JsonProcessingException e) {
+            throw new CepLogException("Falha ao serializar resposta para CEP: " + cep, e);
+        }
 
-            CepLog log = new CepLog();
-            log.setCep(cep);
-            log.setResponse(json);
-            log.setDataConsulta(LocalDateTime.now());
+        CepLog log = CepLog.of(cep, json);
 
+        repository.save(log);
+
+        try {
             sqsProducer.sendMessage(json);
-            repository.save(log);
-
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao processar log", e);
+            throw new CepLogException("Falha ao enviar mensagem SQS para CEP: " + cep, e);
         }
     }
 }
