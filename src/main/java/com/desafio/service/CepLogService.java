@@ -31,14 +31,15 @@ public class CepLogService {
             throw new CepLogException("Falha ao serializar resposta para CEP: " + cep, e);
         }
 
-        CepLog log = CepLog.of(cep, json);
-
-        repository.save(log);
-
         try {
             sqsProducer.sendMessage(json);
         } catch (Exception e) {
             throw new CepLogException("Falha ao enviar mensagem SQS para CEP: " + cep, e);
         }
+
+        CepLog log = CepLog.of(cep, json);
+        repository.save(log);
     }
+
+
 }
