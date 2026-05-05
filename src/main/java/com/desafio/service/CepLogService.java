@@ -2,6 +2,7 @@ package com.desafio.service;
 
 import com.desafio.exception.CepLogException;
 import com.desafio.infra.repository.CepLogRepository;
+import com.desafio.infra.response.CepResponse;
 import com.desafio.infra.sqs.SqsProducer;
 import com.desafio.model.CepLog;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,7 +24,7 @@ public class CepLogService {
         this.objectMapper = objectMapper;
     }
 
-    public void save(String cep, Object response) {
+    public void save(String cep, CepResponse response) {
         String json;
         try {
             json = objectMapper.writeValueAsString(response);
